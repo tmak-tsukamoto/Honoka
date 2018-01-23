@@ -13,7 +13,6 @@ const BANNER = `/*!
  */`;
 
 Gulp.task('default', () => {
-  console.log("Hello, world!");
 });
 
 Gulp.task('css:clean', () => {
@@ -25,28 +24,28 @@ Gulp.task('css:lint', () => {
     .pipe(Plugins.stylelint({
       failAfterError: true,
       reporters: [
-        {formatter: 'verbose', console: true}
-      ]
+        { formatter: 'verbose', console: true },
+      ],
     }));
 });
 
 Gulp.task('css:build', () => {
   return Gulp.src(['scss/**/*.scss'])
     .pipe(Plugins.plumber({
-      errorHandler: function(err) {
+      errorHandler(err) {
         console.error(err.message);
         this.emit('end');
-      }
+      },
     }))
     .pipe(Plugins.sass({
       includePaths: [
-        'node_modules/'
+        'node_modules/',
       ],
       outputStyle: 'expanded',
       sourceMap: true,
       sourceMapContents: true,
       lineFeed: 'lf',
-      precision: 6
+      precision: 6,
     }))
     .pipe(Plugins.plumber.stop())
     .pipe(Plugins.postcss({
@@ -70,15 +69,15 @@ Gulp.task('css:minify', () => {
       level: 1,
     }))
     .pipe(Plugins.rename({
-      extname: '.min.css'
+      extname: '.min.css',
     }))
     .pipe(Gulp.dest('dist/css'));
 });
 
 Gulp.task('clean', (resolve) => {
-  RunSequence(['css:clean'], () => resolve());
+  return RunSequence(['css:clean'], () => { resolve(); });
 });
 
 Gulp.task('css', (resolve) => {
-  RunSequence('clean', 'css:build', 'css:minify', 'css:banner', () => resolve());
+  return RunSequence('clean', 'css:build', 'css:minify', 'css:banner', () => { resolve(); });
 });

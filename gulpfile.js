@@ -59,7 +59,7 @@ Gulp.task('css:build', () => {
 
 Gulp.task('css:banner', () => {
   return Gulp.src(['dist/css/*.css'])
-    .pipe(Plugins.replace('/*!', `@charset "UTF-8";\n${BANNER}\n/*!`))
+    .pipe(Plugins.replace('/*! [<<original banner space>>] */', BANNER))
     .pipe(Gulp.dest('dist/css'));
 });
 
